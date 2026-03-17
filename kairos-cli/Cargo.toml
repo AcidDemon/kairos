@@ -1,0 +1,25 @@
+[package]
+name        = "kairos"
+description = "TOTP-derived port-knocking client"
+version.workspace    = true
+edition.workspace    = true
+license.workspace    = true
+repository.workspace = true
+
+[[bin]]
+name = "kairos"
+path = "src/main.rs"
+
+[dependencies]
+kairos-core = { path = "../kairos-core" }
+anyhow      = "1"
+clap        = { version = "4", features = ["derive", "env"] }
+dirs        = "6"
+getrandom   = "0.3"
+hex         = "0.4"
+serde       = { version = "1", features = ["derive"] }
+toml        = "0.8"
+zeroize     = "1"
+
+[dev-dependencies]
+tempfile = "3"

@@ -1,0 +1,9 @@
+[workspace]
+resolver = "2"
+members  = ["kairos-core", "kairosd", "kairos-cli"]
+
+[workspace.package]
+version     = "0.1.0"
+edition     = "2024"
+license     = "MIT"
+repository  = "https://github.com/yourorg/kairos"

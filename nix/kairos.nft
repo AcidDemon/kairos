@@ -1,0 +1,31 @@
+#!/usr/sbin/nft -f
+# contrib/kairos.nft
+#
+# Reference nftables ruleset for kairosd.
+# Included automatically when using the NixOS module with openFirewall = true.
+# On non-NixOS hosts, load with: nft -f /etc/nftables.d/kairos.nft
+
+table inet kairos {
+
+    # IPv4 source addresses authenticated by kairosd.
+    # Entries carry per-element timeouts — they expire automatically even if
+    # kairosd is not running, so there is no persistent open-door risk on crash.
+    set kairos_allowed_v4 {
+        type  ipv4_addr
+        flags timeout, interval
+    }
+
+    # IPv6 source addresses authenticated by kairosd.
+    set kairos_allowed_v6 {
+        type  ipv6_addr
+        flags timeout, interval
+    }
+
+    # Runs at priority filter-1, before the host's default input chain, so
+    # authenticated IPs are accepted regardless of the default policy.
+    chain kairos_input {
+        type filter hook input priority filter - 1;
+        ip  saddr @kairos_allowed_v4 tcp dport 22 accept
+        ip6 saddr @kairos_allowed_v6 tcp dport 22 accept
+    }
+}
